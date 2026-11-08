@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -10,10 +11,13 @@ st.set_page_config(
     layout="wide"
 )
 
-# Load Data dengan Caching & Handling Nama Kolom
+# Load Data dengan Jalur Berkas Dinamis
 @st.cache_data
 def load_data():
-    df = pd.read_csv("main_data.csv")
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(script_dir, "main_data.csv")
+    
+    df = pd.read_csv(file_path)
     df['order_purchase_timestamp'] = pd.to_datetime(df['order_purchase_timestamp'])
     
     # Standarisasi kolom jika terdapat perbedaan penamaan
