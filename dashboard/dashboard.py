@@ -72,10 +72,10 @@ with col3:
 
 st.divider()
 
-# Grafik 1: Tren Penjualan Bulanan
+# Grafik 1: Tren Penjualan Bulanan (Universal Pandas Groupby)
 st.subheader("📈 Tren Pendapatan Penjualan")
-monthly_revenue = main_filtered_df.resample(rule='M', on='order_purchase_timestamp')['total_payment_value'].sum().reset_index()
-monthly_revenue['order_purchase_timestamp'] = monthly_revenue['order_purchase_timestamp'].dt.strftime('%Y-%m')
+monthly_revenue = main_filtered_df.groupby(main_filtered_df['order_purchase_timestamp'].dt.to_period('M'))['total_payment_value'].sum().reset_index()
+monthly_revenue['order_purchase_timestamp'] = monthly_revenue['order_purchase_timestamp'].astype(str)
 
 fig_trend, ax_trend = plt.subplots(figsize=(12, 4))
 sns.lineplot(data=monthly_revenue, x='order_purchase_timestamp', y='total_payment_value', marker='o', color='#1f77b4', ax=ax_trend)
